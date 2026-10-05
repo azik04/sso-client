@@ -1,0 +1,11 @@
+.notfound__box{
+    width: 100%;
+    max-width: 320px;
+    padding: 20px;
+    background: var(--color-white);
+    border-radius: var(--radius-xl);
+    border: 1px solid var(--color-border);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+    text-align: center;
+}

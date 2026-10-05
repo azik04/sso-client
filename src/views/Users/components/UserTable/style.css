@@ -1,0 +1,29 @@
+.table__wrap {
+    overflow-x: auto;
+}
+
+.table__body {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+}
+
+.table__body thead th {
+    text-align: left;
+    padding: 12px 24px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #8d97a6;
+    white-space: nowrap;
+    border-bottom: 1px solid #eceff3;
+}
+
+.table__body tbody td {
+    padding: 13px 24px;
+    color: #1a2233;
+    border-bottom: 1px solid #f2f4f7;
+}
+
+.table__body tbody tr:hover {
+    background: #f8fafc;
+}

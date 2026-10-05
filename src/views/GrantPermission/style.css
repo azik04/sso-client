@@ -1,0 +1,12 @@
+.permission-box {
+    width: 100%;
+    max-width: 450px;
+    margin: 0 auto;
+    padding: 32px;
+    background: var(--color-white);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow);
+    text-align: center;
+    overflow: hidden;
+}
