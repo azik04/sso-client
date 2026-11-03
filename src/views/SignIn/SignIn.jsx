@@ -28,7 +28,7 @@ const SignIn = () => {
         e.preventDefault();
 
         try {
-            await api.post("/Account/sign-in", query);
+            await api.post("/Auth/sign-in", query);
 
             const params = new URLSearchParams(window.location.search);
             const returnUrl = params.get("returnUrl");

@@ -27,3 +27,9 @@
 .table__body tbody tr:hover {
     background: #f8fafc;
 }
+
+.action-container{
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+}

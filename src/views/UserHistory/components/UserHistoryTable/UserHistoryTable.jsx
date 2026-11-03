@@ -14,6 +14,13 @@ const UserHistoryTable = ({ data }) => {
                     </tr>
                 </thead>
                 <tbody>
+                    {data.length === 0 && (
+                        <tr>
+                            <td className="table-nodata" colSpan={4}>
+                                Data tapılmadı.
+                            </td>
+                        </tr>
+                    )}
 
                     {data.map((item, index) => (
                         <tr key={index}>

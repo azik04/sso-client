@@ -1,7 +1,9 @@
+import Button from "../Button/Button";
 import "./style.css";
 
 const Table = ({
     children,
+    isFooter = false,
     headerText,
     hasNextPage,
     hasPrevPage,
@@ -25,64 +27,64 @@ const Table = ({
                 <h2 className="table__title">{headerText}</h2>
 
                 {isButton && (
-                    <button className="sign-out-btn" type="button" onClick={buttonFunc}>{buttonTxt}</button>
+                    <Button text={buttonTxt} onClick={buttonFunc} />
                 )}
             </div>
 
             {children}
 
-            <div className="table__footer">
-                <span className="table__count">
-                    {startItem}-{endItem} of {totalCount}
-                </span>
 
-                <div className="table__pagination">
-                    <span className="table__per-page-label">
-                        Səhifə üzrə:
+            {isFooter && (
+                <div className="table__footer">
+                    <span className="table__count">
+                        {startItem}-{endItem} of {totalCount}
                     </span>
 
-                    <select
-                        className="table__per-page-select"
-                        value={pageSize}
-                        onChange={(e) => {
-                            setPageSize(Number(e.target.value));
-                            setPageNumber(1);
-                        }}
-                    >
-                        <option value={10}>10</option>
-                        <option value={25}>25</option>
-                        <option value={50}>50</option>
-                        <option value={100}>100</option>
-                        <option value={250}>250</option>
-                    </select>
+                    <div className="table__pagination">
+                        <span className="table__per-page-label">
+                            Səhifə üzrə:
+                        </span>
 
-                    <button
-                        className="table__page-btn"
-                        disabled={!hasPrevPage}
-                        onClick={() =>
-                            setPageNumber((prev) => prev - 1)
-                        }
-                        aria-label="Previous page"
-                    >
-                        <i className="fa-solid fa-chevron-left"></i>
-                    </button>
+                        <select
+                            className="table__per-page-select"
+                            value={pageSize}
+                            onChange={(e) => {
+                                setPageSize(Number(e.target.value));
+                                setPageNumber(1);
+                            }}
+                        >
+                            <option value={10}>10</option>
+                            <option value={25}>25</option>
+                            <option value={50}>50</option>
+                            <option value={100}>100</option>
+                            <option value={250}>250</option>
+                        </select>
 
-                    <span className="table__page-current">
-                        {pageNumber} / {totalPages}
-                    </span>
+                        <button
+                            className="table__page-btn"
+                            disabled={!hasPrevPage}
+                            onClick={() => setPageNumber(prev => prev - 1)}
+                            aria-label="Previous page"
+                        >
+                            <i className="fa-solid fa-chevron-left"></i>
+                        </button>
 
-                    <button
-                        className="table__page-btn"
-                        disabled={!hasNextPage}
-                        onClick={() =>
-                            setPageNumber((prev) => prev + 1)
-                        }
-                        aria-label="Next page"
-                    >
-                        <i className="fa-solid fa-chevron-right"></i>
-                    </button>
+                        <span className="table__page-current">
+                            {pageNumber} / {totalPages}
+                        </span>
+
+                        <button
+                            className="table__page-btn"
+                            disabled={!hasNextPage}
+                            onClick={() => setPageNumber(prev => prev + 1)}
+                            aria-label="Next page"
+                        >
+                            <i className="fa-solid fa-chevron-right"></i>
+                        </button>
+                    </div>
                 </div>
-            </div>
+            )}
+
         </div>
     );
 };

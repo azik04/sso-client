@@ -1,16 +1,43 @@
+
 import "./style.css";
 import { useEffect, useState } from "react";
 import api from "../../services/api";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import { useUser } from "../../context/UserContext";
+
+import Commission from "./components/Commission/Commission";
+import PersonalInfo from "./components/PersonalInfo/PersonalInfo";
+import Apps from "./components/Apps/Apps";
+import Header from "./components/Header/Header";
+import Exam from "./components/Exam/Exam";
 
 const Info = () => {
-    const [data, setData] = useState({})
-    const navigate = useNavigate()
+    const { user, fetchUser, loading } = useUser();
+    console.log("User", user)
+    const [data, setData] = useState({});
+    const [form, setForm] = useState({});
+
+    const navigate = useNavigate();
+    const { userId } = useParams();
 
     const fetchData = async () => {
         try {
-            const res = await api.get("Account/me")
-            setData(res.data)
+            if (!userId) {
+                const item = user;
+
+                if (!item) return;
+
+                setData(item);
+                setFormData(item);
+                return;
+            }
+
+            const res = await api.get(`Account/id/${userId}`);
+            const item = res.data.data;
+
+            setData(item);
+            setFormData(item);
+
         } catch (error) {
             if (error.response?.status === 401) {
                 navigate("/sign-in?returnUrl");
@@ -18,119 +45,56 @@ const Info = () => {
 
             console.error(error);
         }
-    }
+    };
+
+    const setFormData = (item) => {
+        setForm({
+            name: item.name,
+            surname: item.surname,
+            workStartDate: item.workStartDate ?? "",
+            lastUpdatePositionDate: item.lastUpdatePositionDate ?? "",
+            pin: item.pin ?? "",
+            documentNumber: item.documentNumber ?? "",
+            localContact: item.localContact ?? "",
+            globalContact: item.globalContact ?? ""
+        });
+    };
 
     useEffect(() => {
-        fetchData()
-    }, []);
+        if (!userId && user) {
+            setData(user);
+            setFormData(user);
+        }
+    }, [user]);
 
-    const signOutFunc = async () => {
-        const res = await api.post("Account/sign-out")
-        navigate("/sign-in")
-    }
+    useEffect(() => {
+        if (userId) {
+            fetchData();
+        }
+    }, [userId]);
+
+    if (loading && !userId) return <div>Loading...</div>;
 
     return (
-        <div className="info-box">
+        <div className="main-page">
+            <Header />
 
-            <div className="info-box__header">
-                <h2>Şəxsi məlumatlar</h2>
+            <PersonalInfo
+                data={data}
+                form={form}
+                setForm={setForm}
+                fetchData={fetchData}
+            />
 
-                <button className="sign-out-btn" onClick={signOutFunc}>Sign-out</button>
-            </div>
+            {!userId && <Apps />}
 
-            <div className="info-box__content">
+            {user?.role === "HrAdmin" && (
+                <Commission data={data?.commissionRank ?? []} />
+            )}
 
-                <div className="info-box__row">
-                    <span className="info-box__label">
-                        İdentifikator
-                    </span>
-
-                    <span className="info-box__value">
-                        {data.id}
-                    </span>
-                </div>
-
-                <div className="info-box__row">
-                    <span className="info-box__label">
-                        Ad
-                    </span>
-
-                    <span className="info-box__value">
-                        {data.name}
-                    </span>
-                </div>
-
-                <div className="info-box__row">
-                    <span className="info-box__label">
-                        Soyad
-                    </span>
-
-                    <span className="info-box__value">
-                        {data.surname}
-                    </span>
-                </div>
-
-                <div className="info-box__row">
-                    <span className="info-box__label">
-                        Username
-                    </span>
-
-                    <span className="info-box__value">
-                        {data.username}
-                    </span>
-                </div>
-
-                <div className="info-box__row">
-                    <span className="info-box__label">
-                        Email
-                    </span>
-
-                    <span className="info-box__value">
-                        {data.email}
-                    </span>
-                </div>
-
-                <div className="info-box__row">
-                    <span className="info-box__label">
-                        İdarə
-                    </span>
-
-                    <span className="info-box__value">
-                        {data.administration}
-                    </span>
-                </div>
-
-                <div className="info-box__row">
-                    <span className="info-box__label">
-                        Şöbə
-                    </span>
-
-                    <span className="info-box__value">
-                        {data.department}
-                    </span>
-                </div>
-
-                <div className="info-box__row">
-                    <span className="info-box__label">
-                        Vəzifə
-                    </span>
-
-                    <span className="info-box__value">
-                        {data.position}
-                    </span>
-                </div>
-
-                <div className="info-box__row">
-                    <span className="info-box__label">
-                        İstifadəçi tarixçəsi
-                    </span>
-
-                    <span className="info-box__value">
-                        <Link to={`/user/${data.id}/history`}>Daha ətraflı</Link>
-                    </span>
-                </div>
-
-            </div>
+            {["Hr", "HrAdmin"].includes(user?.role) && (
+                <Exam data={data?.externalService ?? []} />
+            )}
         </div>
     );
 };

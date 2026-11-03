@@ -156,3 +156,14 @@
 .table__body tbody tr:hover {
     background: #f8fafc;
 }
+
+.table-nodata{
+    text-align: center;
+}
+
+.table table th:last-child,
+.table table td:last-child {
+    text-align: right;
+    white-space: nowrap;
+    width: 1%;
+}

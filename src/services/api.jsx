@@ -47,7 +47,7 @@ api.interceptors.response.use(
         if (["post", "put", "delete"].includes(method)) {
             notify.setSuccess("Əməliyyat uğurla tamamlandı!");
         }
-
+        console.log(response.data.data)
         return response;
     },
     async (error) => {

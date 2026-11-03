@@ -88,6 +88,7 @@ const UserHistory = () => {
                 totalCount={totalCount}
                 totalPages={totalPages}
                 isButton={true}
+                isFooter={true}
                 buttonTxt={"Export Data"}
                 buttonFunc={downloadData}
             >

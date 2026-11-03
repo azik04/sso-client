@@ -3,7 +3,7 @@ import "./style.css"
 
 const Layout = () => {
     return (
-        <div class="oauth__bg">
+        <div className="oauth__bg">
             <div className="container">
                 <Outlet />
             </div>
